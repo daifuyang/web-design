@@ -1,0 +1,36 @@
+{
+  "componentName": "Page",
+  "id": "node_dockcviv8fo1",
+  "props": {
+    "ref": "outerView",
+    "style": {
+      "height": "100%"
+    }
+  },
+  "docId": "doclaqkk3b9",
+  "fileName": "/",
+  "dataSource": {
+    "list": []
+  },
+  "state": {},
+  "css": "",
+  "lifeCycles": {
+    "componentDidMount": {
+      "type": "JSFunction",
+      "value": "function componentDidMount() {\n  console.log('did mount');\n}",
+      "source": "function componentDidMount() {\n  console.log('did mount');\n}"
+    },
+    "componentWillUnmount": {
+      "type": "JSFunction",
+      "value": "function componentWillUnmount() {\n  console.log('will unmount');\n}",
+      "source": "function componentWillUnmount() {\n  console.log('will unmount');\n}"
+    }
+  },
+  "methods": {},
+  "originCode": "class LowcodeComponent extends Component {\n  state = {\n    \n  }\n  componentDidMount() {\n    console.log('did mount');\n  }\n  componentWillUnmount() {\n    console.log('will unmount');\n  }\n}",
+  "hidden": false,
+  "title": "",
+  "isLocked": false,
+  "condition": true,
+  "conditionGroup": ""
+}

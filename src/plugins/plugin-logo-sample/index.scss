@@ -1,0 +1,15 @@
+.lowcode-plugin-logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 300px;
+  .title {
+    margin: 0;
+  }
+  .page-manage {
+    margin-left: 20px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
