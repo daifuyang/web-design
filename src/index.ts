@@ -1,13 +1,13 @@
 import { init, plugins } from '@alilc/lowcode-engine';
-import { createFetchHandler } from '@alilc/lowcode-datasource-fetch-handler'
+import { createFetchHandler } from '@alilc/lowcode-datasource-fetch-handler';
 import EditorInitPlugin from './plugins/plugin-editor-init';
 import UndoRedoPlugin from '@alilc/lowcode-plugin-undo-redo';
 import ZhEnPlugin from '@alilc/lowcode-plugin-zh-en';
 // import CodeGenPlugin from '@alilc/lowcode-plugin-code-generator'; // 出码
 import DataSourcePanePlugin from '@alilc/lowcode-plugin-datasource-pane';
 import SchemaPlugin from '@alilc/lowcode-plugin-schema';
-import CodeEditorPlugin from "@alilc/lowcode-plugin-code-editor";
-import ManualPlugin from "@alilc/lowcode-plugin-manual";
+import CodeEditorPlugin from '@alilc/lowcode-plugin-code-editor';
+import ManualPlugin from '@alilc/lowcode-plugin-manual';
 import InjectPlugin from '@alilc/lowcode-plugin-inject';
 import SimulatorResizerPlugin from '@alilc/lowcode-plugin-simulator-select';
 import ComponentPanelPlugin from './plugins/plugin-component-panel';
@@ -25,15 +25,22 @@ import appHelper from './appHelper';
 import './global.scss';
 
 async function registerPlugins() {
+  const parsedUrl = new URL(window.location.href);
+  const id = parsedUrl.searchParams.get('id');
+  if (!id) {
+    return;
+  }
+
   await plugins.register(InjectPlugin);
 
   await plugins.register(EditorInitPlugin, {
     scenarioName: '',
     displayName: '',
+    params: {
+      id,
+    },
     info: {
-      urls: [
-        
-      ],
+      urls: [],
     },
   });
 
@@ -72,8 +79,8 @@ async function registerPlugins() {
       },
       {
         type: 'jsonp',
-      }
-    ]
+      },
+    ],
   });
 
   await plugins.register(CodeEditorPlugin);
@@ -91,7 +98,7 @@ async function registerPlugins() {
   await plugins.register(SimulatorLocalePlugin);
 
   // await plugins.register(lowcodePlugin);
-};
+}
 
 (async function main() {
   await registerPlugins();
