@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { init, plugins } from '@alilc/lowcode-engine';
 import { createFetchHandler } from '@alilc/lowcode-datasource-fetch-handler';
 import EditorInitPlugin from './plugins/plugin-editor-init';
@@ -21,16 +23,14 @@ import SetRefPropPlugin from '@alilc/lowcode-plugin-set-ref-prop';
 import LogoSamplePlugin from './plugins/plugin-logo-sample';
 import SimulatorLocalePlugin from './plugins/plugin-simulator-locale';
 import lowcodePlugin from './plugins/plugin-lowcode-component';
+import Home from 'src/components/home';
 import appHelper from './appHelper';
 import './global.scss';
 
-async function registerPlugins() {
-  const parsedUrl = new URL(window.location.href);
-  const id = parsedUrl.searchParams.get('id');
-  if (!id) {
-    return;
-  }
+const parsedUrl = new URL(window.location.href);
+const id = parsedUrl.searchParams.get('id');
 
+async function registerPlugins() {
   await plugins.register(InjectPlugin);
 
   await plugins.register(EditorInitPlugin, {
@@ -101,6 +101,18 @@ async function registerPlugins() {
 }
 
 (async function main() {
+  // 校验用户是否登录
+  const div = document.createElement('div');
+/*   div.style.position = 'fixed';
+  div.style.background = '#fff';
+  div.style.zIndex = '999';
+  div.style.width = '100%';
+  div.style.height = '100%';
+  div.style.top = '0';
+  div.style.left = '0'; */
+  document.body.appendChild(div);
+  ReactDOM.render(React.createElement(Home, { id }), div);
+
   await registerPlugins();
 
   init(document.getElementById('lce-container')!, {
