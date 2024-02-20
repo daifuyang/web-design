@@ -19,13 +19,15 @@ const EditorInitPlugin = (ctx: IPublicModelPluginContext, options: any) => {
 
       await material.setAssets(await injectAssets(assets));
       const { id } = params;
-      const res: any = await getPage(id);
-      if (res.code == 1) {
-        const { schema } = res.data;
-        // 加载 schema
-        project.importSchema({
-          componentsTree: [schema]
-        } as any);
+      if (id) {
+        const res: any = await getPage(id);
+        if (res.code == 1) {
+          const { schema } = res.data;
+          // 加载 schema
+          project.importSchema({
+            componentsTree: [schema]
+          } as any);
+        }
       }
     },
   };

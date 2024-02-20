@@ -20,7 +20,7 @@ instance.interceptors.request.use((config) => {
 });
 
 // 导出一个封装后的请求函数
-export const request = (url: string, config: AxiosRequestConfig): Promise<AxiosResponse> => {
+export const request = (url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse> => {
   let newConfig: AxiosRequestConfig = {};
 
   if (_.lowerCase(config.method) !== 'post') {
