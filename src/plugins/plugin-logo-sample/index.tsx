@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { IPublicModelPluginContext } from '@alilc/lowcode-types';
-import { Dropdown, Menu, Drawer, Message } from '@alifd/next';
+import { Drawer, Message, Button, Nav, Overlay } from '@alifd/next';
+import { Input, Icon } from '@alifd/next'
 import { getPageList } from 'src/services/page';
-import './index.scss';
+const { event } = (window as any).AliLowCodeEngine || {};
+import classNames from 'classnames';
+import styles from './index.module.scss';
+import { getSearchParams, redirect } from 'src/utils/util';
+import { emitAddPageEventName } from '../plugin-add-page-panel/components/pane';
+
+const { Item, SubNav, PopupItem } = Nav
+const { Popup } = Overlay;
+
 export interface IProps {
   logo?: string;
   href?: string;
@@ -10,7 +19,12 @@ export interface IProps {
   scenarioDisplayName?: string;
 }
 
-const Logo: React.FC<IProps> = (props): React.ReactElement => {
+const Logo: React.FC<IProps> = (props: any): React.ReactElement => {
+
+  const { pageDetail } = props
+
+  const id = getSearchParams('id')
+
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
 
@@ -28,28 +42,72 @@ const Logo: React.FC<IProps> = (props): React.ReactElement => {
   }, []);
 
   return (
-    <div className="lowcode-plugin-logo">
-      <h1 className="title">NextCMS</h1>
+    <div className={styles.root}>
+      <h1 className={styles.logo}>NextCMS</h1>
       <div
-        className="page-manage"
+        className={styles.pageList}
         onClick={() => {
           setOpen(true);
         }}
       >
-        页面
+        {pageDetail?.title || '页面列表'}
       </div>
 
       <Drawer
+        className={styles.drawer}
         title="页面列表"
         visible={open}
+        bodyStyle={{ padding: 12 }}
         placement={'left'}
         onClose={() => {
           setOpen(false);
         }}
       >
-        {list.map((item: any) => {
-          return <a href="">{item.title}</a>;
-        })}
+        <div className={styles.searchWrap}>
+          <Input
+            innerAfter={
+              <Icon
+                type="search"
+                size="xs"
+                style={{ margin: 4 }}
+              />
+            }
+            placeholder="搜索"
+          />
+          <Button onClick={ () => {
+            console.log('add')
+            event.emit(emitAddPageEventName,true);
+          } } className={styles.add} type="primary" size="large">
+            <Icon type="add" />
+          </Button>
+        </div>
+
+        <Nav
+          style={{ width: "100%" }}
+          embeddable={true}
+          triggerType="hover"
+          popupAutoWidth={false}
+        >
+          {list.map((item: any) => {
+            return (
+              <PopupItem key={item.id} onClick={() => {
+                redirect({ id: item.id })
+              }} className={classNames({
+                [styles.navPopup]: true,
+                [styles.itemActive]: id == item.id
+              })} label={`${item.title}`}>
+                <div style={{ width: "100px", background: '#fff', color: '#fff' }}>
+                  <Nav embeddable={true}>
+                    <Item key={`${item.id}-settings`}>设置</Item>
+                    <Item key={`${item.id}-home`}>设为首页</Item>
+                    <Item key={`${item.id}-copy`}>复制页面</Item>
+                    <Item key={`${item.id}-delete`}>删除页面</Item>
+                  </Nav>
+                </div>
+              </PopupItem>
+            )
+          })}
+        </Nav>
       </Drawer>
     </div>
   );
@@ -59,6 +117,9 @@ const LogoSamplePlugin = (ctx: IPublicModelPluginContext) => {
   return {
     async init() {
       const { skeleton, config } = ctx;
+
+      const pageDetail = config.get('pageDetail')
+
       // 注册 logo widget
       skeleton.add({
         area: 'topArea',
@@ -66,8 +127,7 @@ const LogoSamplePlugin = (ctx: IPublicModelPluginContext) => {
         name: 'logo',
         content: <Logo />,
         contentProps: {
-          logo: 'https://img.alicdn.com/imgextra/i4/O1CN013w2bmQ25WAIha4Hx9_!!6000000007533-55-tps-137-26.svg',
-          href: 'https://lowcode-engine.cn',
+          pageDetail
         },
         props: {
           align: 'left',

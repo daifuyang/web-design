@@ -32,5 +32,16 @@
   "title": "",
   "isLocked": false,
   "condition": true,
-  "conditionGroup": ""
+  "conditionGroup": "",
+  "children": [
+    {
+      "componentName": "Header"
+    },
+    {
+      "componentName": "Main"
+    },
+    {
+      "componentName": "Footer"
+    }
+  ]
 }

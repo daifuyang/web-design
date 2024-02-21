@@ -1,16 +1,14 @@
 import { IPublicModelPluginContext } from '@alilc/lowcode-types';
 import { Button } from '@alifd/next';
 import { saveSchema, resetSchema } from '../../services/mockService';
+import { getSearchParams } from 'src/utils/util';
 
 // 保存功能示例
 const SaveSamplePlugin = (ctx: IPublicModelPluginContext) => {
   return {
     async init() {
-      const { skeleton, hotkey, config } = ctx;
-
-      const params = config.get('params');
-      const { id } = params;
-
+      const { skeleton, hotkey } = ctx;
+      const id = getSearchParams('id')
       skeleton.add({
         name: 'saveSample',
         area: 'topArea',
@@ -31,7 +29,7 @@ const SaveSamplePlugin = (ctx: IPublicModelPluginContext) => {
       });
       hotkey.bind('command+s', (e) => {
         e.preventDefault();
-        saveSchema();
+        saveSchema(id);
       });
     },
   };

@@ -6,14 +6,22 @@ export async function getPageList(params = {}) {
 }
 
 // 获取页面详情
-export async function getPage(id: number, params = {}) {
+export async function getPage(id: string| number, params = {}) {
   return await request(`/api/admin/page/${id}`, params);
 }
 
+// 新增空白页面
+export async function addPage(data = {}) {
+  return await request(`/api/admin/page/`, {
+    method: 'POST',
+    data,
+  });
+}
+
 // 更新页面
-export async function updatePage(id: number, data = {}) {
+export async function updatePage(id: number | string, data = {}) {
   return await request(`/api/admin/page/${id}`, {
     method: 'POST',
-    data
+    data,
   });
 }

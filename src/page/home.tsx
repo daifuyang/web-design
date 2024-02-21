@@ -4,7 +4,7 @@ import AddPage from '../page/addPage';
 import { getPageList } from 'src/services/page';
 import { currentUser } from 'src/services/user';
 import './home.scss';
-
+import { redirect } from 'src/utils/util';
 
 export default function Home(props: any) {
     const { id, lowcode } = props;
@@ -42,6 +42,9 @@ export default function Home(props: any) {
     async function fetchData() {
         const res: any = await getPageList({ pageSize: 0 })
         if (res.code === 1) {
+            if(!id && res.data?.length > 0) {
+                redirect({id: res.data[0].id})
+            }
             setPageList(res.data)
         }
         setLoading(false)
@@ -64,9 +67,13 @@ export default function Home(props: any) {
         </div>
     }
 
+    if (pageList?.length > 0) {
+        return null
+    }
+
     return (
         <>
-            <AddPage visible={open} style={{ width: '60%' }} height='80%' footerActions={["ok"]} onOk={
+            <AddPage title="请选择模板" visible={open} style={{ width: '60%' }} height='80%' footerActions={["ok"]} onOk={
                 () => {
                     setOpen(false)
                 }

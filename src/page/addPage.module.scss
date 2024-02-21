@@ -1,0 +1,13 @@
+.root {
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    border: 1px solid #eee;
+    padding-top: 111.2%;
+    .card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+}

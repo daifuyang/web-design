@@ -23,12 +23,13 @@ import SetRefPropPlugin from '@alilc/lowcode-plugin-set-ref-prop';
 import LogoSamplePlugin from './plugins/plugin-logo-sample';
 import SimulatorLocalePlugin from './plugins/plugin-simulator-locale';
 import lowcodePlugin from './plugins/plugin-lowcode-component';
+import AddPagePanelPlugin from './plugins/plugin-add-page-panel'
 import Home from 'src/page/home';
 import appHelper from './appHelper';
 import './global.scss';
+import { getSearchParams } from './utils/util';
 
-const parsedUrl = new URL(window.location.href);
-const id = parsedUrl.searchParams.get('id');
+const id = getSearchParams('id')
 
 async function registerPlugins() {
   await plugins.register(InjectPlugin);
@@ -36,9 +37,6 @@ async function registerPlugins() {
   await plugins.register(EditorInitPlugin, {
     scenarioName: '',
     displayName: '',
-    params: {
-      id,
-    },
     info: {
       urls: [],
     },
@@ -48,6 +46,8 @@ async function registerPlugins() {
   await plugins.register(DefaultSettersRegistryPlugin);
 
   await plugins.register(LogoSamplePlugin);
+
+  await plugins.register(AddPagePanelPlugin);
 
   await plugins.register(ComponentPanelPlugin);
 
