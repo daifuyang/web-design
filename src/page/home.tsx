@@ -42,8 +42,13 @@ export default function Home(props: any) {
     async function fetchData() {
         const res: any = await getPageList({ pageSize: 0 })
         if (res.code === 1) {
-            if(!id && res.data?.length > 0) {
-                redirect({id: res.data[0].id})
+            if (!id && res.data?.length > 0) {
+                const home = res.data.filter((item: any) => item.type == 'home');
+                if (home?.length > 0) {
+                    redirect({ id: home[0].id })
+                } else {
+                    redirect({ id: res.data[0].id })
+                }
             }
             setPageList(res.data)
         }
