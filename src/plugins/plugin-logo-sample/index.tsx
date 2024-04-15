@@ -75,7 +75,6 @@ const Logo: React.FC<IProps> = (props: any): React.ReactElement => {
             placeholder="搜索"
           />
           <Button onClick={ () => {
-            console.log('add')
             event.emit(emitAddPageEventName,true);
           } } className={styles.add} type="primary" size="large">
             <Icon type="add" />

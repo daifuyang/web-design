@@ -3,6 +3,7 @@ import { Button } from '@alifd/next';
 import {
   saveSchema,
 } from '../../services/mockService';
+import { getSearchParams } from 'src/utils/util';
 
 // 保存功能示例
 const PreviewSamplePlugin = (ctx: IPublicModelPluginContext) => {
@@ -10,10 +11,11 @@ const PreviewSamplePlugin = (ctx: IPublicModelPluginContext) => {
     async init() {
       const { skeleton, config } = ctx;
       const doPreview = () => {
-        const scenarioName = config.get('scenarioName');
-        saveSchema(scenarioName);
+        const id = getSearchParams('id')
+        console.log("id",id)
+        saveSchema(id);
         setTimeout(() => {
-          const search = location.search ? `${location.search}&scenarioName=${scenarioName}` : `?scenarioName=${scenarioName}`;
+          const search = location.search ? `${location.search}&scenarioName=${id}` : `?scenarioName=${id}`;
           window.open(`./preview.html${search}`);
         }, 500);
       };

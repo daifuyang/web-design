@@ -16,6 +16,10 @@ const generateProjectSchema = (pageSchema: any, i18nSchema: any): IPublicTypePro
 };
 
 export const saveSchema = async (id: number | string) => {
+
+  setPackagesToLocalStorage(id)
+  setProjectSchemaToLocalStorage(id)
+
   const json = project.exportSchema(IPublicEnumTransformStage.Save);
   const schema = json.componentsTree[0]
   const res: any = await updatePage(id, { schema });

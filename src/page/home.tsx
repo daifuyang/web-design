@@ -22,7 +22,7 @@ export default function Home(props: any) {
     }
 
     if (token && token != tokenStr) {
-        localStorage.setItem('token', token)
+        localStorage.setItem('token', JSON.stringify({accessToken: token}))
     }
 
     // 验证用户身份
