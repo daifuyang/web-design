@@ -3,8 +3,9 @@ import { injectAssets } from '@alilc/lowcode-plugin-inject';
 import assets from '../../services/assets.json';
 import { getProjectSchema } from '../../services/mockService';
 import defaultSchema from '../../services/defaultPageSchema.json';
-import { getPage } from 'src/services/page';
+import { getPage, getPageList } from 'src/services/page';
 import { getSearchParams } from 'src/utils/util';
+
 const EditorInitPlugin = (ctx: IPublicModelPluginContext, options: any) => {
   return {
     async init() {
@@ -21,15 +22,15 @@ const EditorInitPlugin = (ctx: IPublicModelPluginContext, options: any) => {
       await material.setAssets(await injectAssets(assets));
       const id = getSearchParams('id')
       if (!!id) {
+
         const res: any = await getPage(id);
-        if (res.code == 1) {
-
+        if (res.code === 1) {
           config.set('pageDetail', res.data);
-
           let { schema } = res.data;
           if (schema.componentName != 'Page') {
             schema = defaultSchema
           }
+
           // 加载 schema
           project.importSchema({
             componentsTree: [schema]

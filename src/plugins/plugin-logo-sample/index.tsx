@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import styles from './index.module.scss';
 import { getSearchParams, redirect } from 'src/utils/util';
 import { emitAddPageEventName } from '../plugin-add-page-panel/components/pane';
+import { saveConfig } from 'src/services/config';
 
 const { Item, SubNav, PopupItem } = Nav
 const { Popup } = Overlay;
@@ -98,7 +99,14 @@ const Logo: React.FC<IProps> = (props: any): React.ReactElement => {
                 <div style={{ width: "100px", background: '#fff', color: '#fff' }}>
                   <Nav embeddable={true}>
                     <Item key={`${item.id}-settings`}>设置</Item>
-                    <Item key={`${item.id}-home`}>设为首页</Item>
+                    <Item onClick={ async (e) => {
+                        const res = await saveConfig('homePage',item.id)
+                        if(res.code === 1) {
+                          Message.success(res.msg);
+                          return
+                        }
+                        Message.error(res.msg)
+                    } } key={`${item.id}-home`}>设为首页</Item>
                     <Item key={`${item.id}-copy`}>复制页面</Item>
                     <Item key={`${item.id}-delete`}>删除页面</Item>
                   </Nav>
