@@ -6,7 +6,7 @@ import EditorInitPlugin from './plugins/plugin-editor-init';
 import UndoRedoPlugin from '@alilc/lowcode-plugin-undo-redo';
 import ZhEnPlugin from '@alilc/lowcode-plugin-zh-en';
 // import CodeGenPlugin from '@alilc/lowcode-plugin-code-generator'; // 出码
-// import DataSourcePanePlugin from '@alilc/lowcode-plugin-datasource-pane';
+import DataSourcePanePlugin from '@alilc/lowcode-plugin-datasource-pane';
 import SchemaPlugin from '@alilc/lowcode-plugin-schema';
 import CodeEditorPlugin from '@alilc/lowcode-plugin-code-editor';
 import ManualPlugin from '@alilc/lowcode-plugin-manual';
@@ -18,7 +18,7 @@ import DefaultSettersRegistryPlugin from './plugins/plugin-default-setters-regis
 // import LoadIncrementalAssetsWidgetPlugin from './plugins/plugin-load-incremental-assets-widget';
 import SaveSamplePlugin from './plugins/plugin-save-sample';
 import PreviewSamplePlugin from './plugins/plugin-preview-sample';
-import CustomSetterSamplePlugin from './plugins/plugin-custom-setter-sample';
+import CustomSetterPlugin from './plugins/plugin-custom-setter';
 import SetRefPropPlugin from '@alilc/lowcode-plugin-set-ref-prop';
 import LogoSamplePlugin from './plugins/plugin-logo-sample';
 import SimulatorLocalePlugin from './plugins/plugin-simulator-locale';
@@ -27,6 +27,7 @@ import Home from 'src/page/home';
 import appHelper from './appHelper';
 import './global.scss';
 import { getSearchParams } from './utils/util';
+import { createEditorHandler } from './utils/dataSource';
 
 const id = getSearchParams('id')
 
@@ -70,17 +71,17 @@ async function registerPlugins() {
   // await plugins.register(LoadIncrementalAssetsWidgetPlugin);
 
   // 插件参数声明 & 传递，参考：https://lowcode-engine.cn/site/docs/api/plugins#%E8%AE%BE%E7%BD%AE%E6%8F%92%E4%BB%B6%E5%8F%82%E6%95%B0%E7%89%88%E6%9C%AC%E7%A4%BA%E4%BE%8B
-  // await plugins.register(DataSourcePanePlugin, {
-  //   importPlugins: [],
-  //   dataSourceTypes: [
-  //     {
-  //       type: 'fetch',
-  //     },
-  //     {
-  //       type: 'jsonp',
-  //     },
-  //   ],
-  // });
+  await plugins.register(DataSourcePanePlugin, {
+    importPlugins: [],
+    dataSourceTypes: [
+      {
+        type: 'fetch',
+      },
+      {
+        type: 'editor',
+      },
+    ],
+  });
 
   await plugins.register(CodeEditorPlugin);
 
@@ -91,7 +92,7 @@ async function registerPlugins() {
 
   await plugins.register(PreviewSamplePlugin);
 
-  await plugins.register(CustomSetterSamplePlugin);
+  await plugins.register(CustomSetterPlugin);
 
   // 设计器区域多语言切换
   await plugins.register(SimulatorLocalePlugin);
@@ -110,6 +111,7 @@ async function lowcode() {
     supportVariableGlobally: true,
     requestHandlersMap: {
       fetch: createFetchHandler(),
+      editor: createEditorHandler()
     },
     appHelper,
   });
