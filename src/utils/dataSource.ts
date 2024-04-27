@@ -14,6 +14,9 @@ export function createEditorHandler(config?: Record<string, unknown>) {
       ...config,
     };
     const response = await request(requestConfig);
+    if(response.status === 200) {
+      return response.data
+    }
     return response;
   };
 }
